@@ -2674,6 +2674,10 @@ enable_liveview:
 					free (data);
 					continue;
 				}
+
+            // TODO return the whole buffer
+            if (FALSE)
+            {
 				/* look for the JPEG SOI marker (0xFFD8) in data */
 				jpgStartPtr = (unsigned char*)memchr(data, 0xff, size);
 				while(jpgStartPtr && ((jpgStartPtr+1) < (data + size))) {
@@ -2704,7 +2708,16 @@ enable_liveview:
 					gp_context_error (context, _("Sorry, your Nikon camera does not seem to return a JPEG image in LiveView mode"));
 					return GP_ERROR;
 				}
+
+
+
+
 				gp_file_append (file, (char*)jpgStartPtr, jpgEndPtr-jpgStartPtr);
+
+            } else {
+                gp_file_append (file, (char*)data, size);
+            }
+
 				free (data); /* FIXME: perhaps handle the 128 byte header data too. */
 				gp_file_set_mime_type (file, GP_MIME_JPEG);     /* always */
 				/* Add an arbitrary file name so caller won't crash */
